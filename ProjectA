@@ -399,7 +399,7 @@ public:
     }
         
 };
-int main(void)
+int main()
 {
     //declare objects
     Student s1;
