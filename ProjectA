@@ -1,1 +1,349 @@
-Test
+//
+//  main2.cpp
+//  EEE102(2)
+//
+//  Created by Anthony Bima Wijaya on 2020/5/14.
+//  Copyright © 2020 Anthony Bima Wijaya. All rights reserved.
+//
+
+#include "main2.hpp"
+#include <iostream>
+#include <string>
+#include <string.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <fstream>
+
+using namespace std;
+class Student{
+public:
+    //declaration
+    string name,status,password;
+    int id;
+    
+    void viewdata(string ID){
+        // filestream variable file
+        ifstream file;
+        string word, t, q, filename;
+
+        // filename of the file
+        filename = "studentdata.txt";
+
+        // opening file
+        file.open(filename.c_str());
+        string info;
+        cout << "Please enter your registered student ID: "<< endl;
+        cin >> ID;
+        cout << "StudentID"<<"\t"<<"Name"<<" "<<"Status"<<endl;
+        
+        // extracting words from the file
+        while (file >> word)
+        {
+            //display information based on ID
+            if (word == ID) {
+                getline(file , info);
+                cout << ID <<"\t"<<info << endl;
+            }
+        }
+        file.close();
+    }
+    
+    void viewmarks(){
+        
+        // filestream variable file
+            ifstream file;
+            string word, t, q, filename;
+
+            // filename of the file
+            filename = "selectcourse.txt";
+
+            // opening file
+            file.open(filename.c_str());
+            string ID,info;
+            cout << "Please enter your registered student ID: "<< endl;
+            cin >> ID;
+            cout << "StudentID"<<"\t"<<"Course"<<"\t"<<"Year"<<"\t"<<"Marks"<<endl;
+            
+            // extracting words from the file
+            while (file >> word)
+            {
+                //display information based on ID
+                if (word == ID) {
+                    getline(file , info);
+                    cout << ID <<"\t"<<info << endl;
+                }
+            }
+            file.close();
+        }
+        
+    
+    };
+class Undergraduate : public Student{
+public:
+    
+    //function
+    void selectcourse(){
+        //declaration
+        ifstream file1;
+        string item,item1,item2,item3;
+        string courseid;
+        
+        //open file
+        file1.open("course.txt");
+        
+        //show courses
+        while(file1 >> item){
+            getline(file1, item1);
+            cout << item << item1<< endl;
+        }
+        
+        cout << ""<< endl;
+        //form
+        cout << "Enter Course ID chosen:"<<endl;
+        cout << "Course ID: ";
+        cin >> courseid;
+        
+        while (file1 >> item2) {
+            if(item2 == courseid){
+            getline(file1, item3);
+                cout << courseid <<"\t"<< item3 << endl;
+        }
+        
+            
+        }
+        
+        //put in select course column
+        ofstream outFile("selectcourse.txt",ofstream::app);
+    };
+};
+
+class Graduate : public Student{
+public:
+    
+    void selectcourse(){
+        //declaration
+        ifstream file1;
+        string item,item1,item2,item3;
+        string courseid;
+        
+        //open file
+        file1.open("course.txt");
+        
+        //show courses
+        while(file1 >> item){
+            getline(file1, item1);
+            cout << item << item1<< endl;
+        }
+        
+        cout << ""<< endl;
+        //form
+        cout << "Enter Course ID chosen:"<<endl;
+        cout << "Course ID: ";
+        cin >> courseid;
+        
+        while (file1 >> item2) {
+            if(item2 == courseid){
+            getline(file1, item3);
+                cout << courseid <<"\t"<< item3 << endl;
+        }
+        
+            
+        }
+        
+        //put in select course column
+        ofstream outFile("selectcourse.txt",ofstream::app);
+    };
+    
+};
+    
+class Staff{
+public:
+    
+    //declaration
+    string name,status,password,word;
+    int id,idsample;
+    
+    // function for add data
+    void Adddata(){
+        
+    // filestream variable file
+        ofstream outFile("studentdata.txt",ofstream::app);
+        ifstream inFile("studentdata,txt");
+        
+    //registration form
+    cout << "Enter student information:"<<endl;
+    cout << "ID: ";
+    cin >>id;
+    cout << "Name: ";
+    cin >> name;
+    cout << "Status: ";
+    cin >> status;
+    
+    //add data
+        while(inFile >> idsample){
+            
+            if(id != idsample){
+                
+                if(outFile.is_open()){
+                    outFile <<id<<" "<<name<<" "<<status;
+                    cout << "input success" << endl;
+                    cout << "" << endl;
+                }
+                outFile.close();
+    
+            }       else{
+                cout << "Duplicate ID" << endl;
+            }
+    }
+        inFile.close();
+    }
+        
+};
+
+class login{
+public:
+    // filestream variable file
+        fstream file;
+        string word, t, q, filename;
+        Student s1;
+        Undergraduate ug;
+        Graduate gr;
+        Staff sf;
+    string Loginstudent(){
+            
+            filename = "text.txt";
+        
+            // opening file
+            file.open(filename.c_str());
+            string user, pw, info,str ,check_pw;
+            int length_pw, length_user;
+            login:
+            cout << "Please enter your username: ";
+            cin >> user;
+            cout << "Please enter your password: ";
+            cin >> pw;
+        
+            length_user = user.size();
+            length_pw = pw.size();
+        
+            // extracting words from the file
+            while (file >> word)
+            {
+                //display  information
+                if (word == user) {
+        
+                    getline(file, info);
+                    
+                    check_pw = info.substr(1, length_pw);
+                    
+                    if (check_pw == pw) {
+                        cout << "Login Successful."<< endl;
+                        
+                        cout << ""<< endl;
+                        level:
+                        int input1;
+                        cout<< "Choose level"<< endl;
+                        cout<< "1.Undergraduate"<<endl;
+                        cout<< "2.Graduate"<< endl;
+                        cout<< "Enter choices: ";
+                        cin >>input1;
+                        
+                        //initialize label
+                        access:
+                        cout << "" <<endl;
+                        switch (input1) {
+                            case 1:
+                                int input2;
+                                cout<< "Choose access"<<endl;
+                                cout<< "1.Select courses"<<endl;
+                                cout<< "2.View your data"<< endl;
+                                cout<< "3.View marks"<< endl;
+                                cout<< "4.Log out"<< endl;
+                                cout<< "5.Exit applicaion"<< endl;
+                                cout<< "Enter choices: ";
+                                cin >> input2;
+                                cout << "" <<endl;
+                                
+                                switch (input2) {
+                                    case 1:
+                                        ug.selectcourse();
+                                        goto access;
+                                        
+                                    case 2:
+                                        s1.viewdata(user);
+                                        goto access;
+                                        
+                                    case 3:
+                                        s1.viewmarks();
+                                        goto access;
+                                        
+                                    case 4:
+                                        goto login;
+                                    
+                                    case 5:
+                                        break;
+                                        
+                                    default:
+                                        break;
+                                }
+                                
+                                
+                            case 2:
+                                
+                                        int input3;
+                                        cout<< "Choose access"<<endl;
+                                        cout<< "1.Select courses"<<endl;
+                                        cout<< "2.View your data"<< endl;
+                                        cout<< "3.View marks"<< endl;
+                                        cout<< "4.Log out"<< endl;
+                                        cout<< "Enter choices: ";
+                                        cin >> input3;
+                                        cout << "" <<endl;
+                                        
+                                        switch (input3) {
+                                            case 1:
+                                                gr.selectcourse();
+                                                goto access;
+                                                
+                                            case 2:
+                                                s1.viewdata(user);
+                                                goto access;
+                                                
+                                            case 3:
+                                                s1.viewmarks();
+                                                goto access;
+                                             
+                                            case 4:
+                                                goto login;
+                                                
+                                            default:
+                                                break;
+                                        }
+                                        
+                                        
+                                    default:
+                                        break;
+                                }
+                    }
+                    else {
+                        cout << "Password incorrect."<<endl;
+                        break;
+                    }
+                   
+                }   else {
+                    cout << "a" << endl;
+                }
+            }
+            file.close();
+            return user;
+    }
+};
+
+int main(){
+    
+    
+    
+};
+
+
+
