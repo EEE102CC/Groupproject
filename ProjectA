@@ -1,12 +1,10 @@
 //
-//  main2.cpp
+//  main.cpp
 //  EEE102(2)
 //
-//  Created by Anthony Bima Wijaya on 2020/5/14.
+//  Created by Anthony Bima Wijaya on 2020/5/12.
 //  Copyright © 2020 Anthony Bima Wijaya. All rights reserved.
 //
-
-#include "main2.hpp"
 #include <iostream>
 #include <string>
 #include <string.h>
@@ -31,7 +29,7 @@ public:
 
         // opening file
         file.open(filename.c_str());
-        string info;
+        string ID,info;
         cout << "Please enter your registered student ID: "<< endl;
         cin >> ID;
         cout << "StudentID"<<"\t"<<"Name"<<" "<<"Status"<<endl;
@@ -270,7 +268,7 @@ public:
                                         goto access;
                                         
                                     case 2:
-                                        s1.viewdata(user);
+                                        s1.viewdata();
                                         goto access;
                                         
                                     case 3:
@@ -306,7 +304,7 @@ public:
                                                 goto access;
                                                 
                                             case 2:
-                                                s1.viewdata(user);
+                                                s1.viewdata();
                                                 goto access;
                                                 
                                             case 3:
@@ -334,15 +332,110 @@ public:
                     cout << "a" << endl;
                 }
             }
-            file.close();            
+            file.close();
     }
+    
+    void Loginadmin(){
+        
+            filename = "text.txt";
+        
+            // opening file
+            file.open(filename.c_str());
+            string user, pw, info,str ,check_pw;
+            int length_pw, length_user;
+            cout << "Please enter your username: ";
+            cin >> user;
+            cout << "Please enter your password: ";
+            cin >> pw;
+        
+            length_user = user.size();
+            length_pw = pw.size();
+        
+            // extracting words from the file
+            while (file >> word)
+            {
+                //display  information
+                if (word == user) {
+        
+                    getline(file, info);
+                    
+                    check_pw = info.substr(1, length_pw);
+                    
+                    if (check_pw == pw) {
+                        cout << "Login Successful."<< endl;
+                        
+                        cout << "" << endl;
+                        
+                        staffaccess:
+                        int inputstaff;
+                        
+                        //staff choices
+                        cout << "Staff Access" << endl;
+                        cout << "1. Edit student data" << endl;
+                        cout << "2. Edit course data" << endl;
+                        cout << "Enter choices: "<< endl;
+                        cin >> inputstaff;
+                        cout << "" << endl;
+                        
+                        switch (inputstaff) {
+                            case 1:
+                                sf.Adddata();
+                                goto staffaccess;
+                                
+                            case 2:
+                                
+                                goto staffaccess;
+                                
+                            default:
+                                break;
+                        }
+                    }
+                    else {
+                        cout << "Login failed.";
+                    }
+                }
+            }
+            file.close();
+    }
+        
 };
+int main(void)
+{
+    //declare objects
+    Student s1;
+    Undergraduate ug;
+    Graduate gr;
+    Staff sf;
+    login log;
+    int input;
+    
+    //initialize label
+    login:
+    //main menu
+    cout << "Student Management" <<endl;
+    cout << "1. Login as Student"<<endl;
+    cout << "2. Login as Staff"<< endl;
+    cout << "Enter choices: "<<endl;
+    cin >> input;
+    cout << "" <<endl;
+    
+    if (input == 1) {
+        log.Loginstudent();
+        
+    }
+            
+    else if (input==2){
+        log.Loginadmin();
+        
+        }
+    
+    else{
+        cout << "Choices not provided"<< endl;
+        goto login;
+    }
 
-int main(){
+    }
     
     
-    
-};
-
-
+   
 
