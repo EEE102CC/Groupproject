@@ -1,0 +1,3 @@
+username password stu_id stu_name stu_level
+kseptian19 123 12345 kelvin undergraduate
+abima18 987 28736 anthony graduate 
