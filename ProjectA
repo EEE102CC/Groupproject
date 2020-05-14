@@ -21,7 +21,7 @@ public:
     string name,status,password;
     int id;
     
-    void viewdata(string ID){
+    void viewdata(){
         // filestream variable file
         ifstream file;
         string word, t, q, filename;
@@ -209,7 +209,7 @@ public:
         Undergraduate ug;
         Graduate gr;
         Staff sf;
-    string Loginstudent(){
+    void Loginstudent(){
             
             filename = "text.txt";
         
@@ -334,8 +334,7 @@ public:
                     cout << "a" << endl;
                 }
             }
-            file.close();
-            return user;
+            file.close();            
     }
 };
 
