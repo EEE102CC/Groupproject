@@ -1,0 +1,395 @@
+//add, modify, delete student information
+#include <iostream>
+#include <conio.h>
+#include <fstream>
+using namespace std;
+struct student
+{
+	int id;
+	char fname[25];
+	char lname[25];
+	char level[5];
+	char course[30];
+};
+struct course
+{
+	char cid[10];
+	char cname[25];
+	char clevel[25];
+
+};
+struct gradcourse
+{
+	char gid[10];
+	char gname[25];
+	char glevel[25];
+};
+
+int main() 
+{
+	loop: 
+	student s;
+	course c;
+	gradcourse gr;
+	
+	int a,b;
+	cout << endl;
+	cout << "Staff access:\n\t1.Save student record\n\t2.Take student record\n\t3.Delete a record\n\t4.Edit a record\n\t5.Log Out\n\tInput your choice : ";
+	cin >> a;
+	
+	switch (a) 
+	{
+	case 1: 
+	{
+
+
+
+		cout << "\n\tEnter student ID          : ";
+		cin >> s.id;
+		cout << "\n\tEnter student first name  : ";
+		cin >> s.fname;
+		cout << "\n\tEnter student last name   : ";
+		cin >> s.lname;
+		cout << "\n\tEnter student level (UG/G): ";
+		cin >> s.level;
+
+		string slevel = s.level;
+
+		if (slevel =="UG") {
+			cout << endl;
+			cout << "\tUndergraduate Courses: " << endl;
+			cout << "\t----------------------";
+		
+		//for UG
+		//open course txt
+		ifstream cdata;
+		cdata.open("undergradcourse.txt");
+		cdata >> c.cid;
+		cdata >> c.cname;
+		cdata >> c.clevel;
+		//course output
+		while (!cdata.eof())
+		{
+
+		cout << endl;
+		cout << "\n\tCourse ID   : " << c.cid;
+		cout << "\n\tCourse Name : " << c.cname;
+		cout << "\n\tCourse for  : " << c.clevel << " " << "Students";
+		cout << endl;
+
+		cdata >> c.cid;
+		cdata >> c.cname;
+		cdata >> c.clevel;
+
+		}
+		cdata.close();
+		}
+		else if(slevel=="G"){
+			cout << endl;
+			cout << "\tGraduate Courses:" << endl;
+			cout << "\t-----------------";
+
+			//open grad course txt file
+			ifstream gdata;
+			gdata.open("gradcourse.txt");
+			gdata >> gr.gid;
+			gdata >> gr.gname;
+			gdata >> gr.glevel;
+
+			//grad course output
+			while (!gdata.eof())
+			{
+
+				cout << endl;
+				cout << "\n\tCourse ID   : " << gr.gid;
+				cout << "\n\tCourse Name : " << gr.gname;
+				cout << "\n\tCourse for  : " << gr.glevel << " " << "Students";
+				cout << endl;
+
+				gdata >> gr.gid;
+				gdata >> gr.gname;
+				gdata >> gr.glevel;
+
+			}
+			gdata.close();
+		}
+
+
+		cout << "\n\tEnter student course ID   : ";
+		cin >> s.course;
+
+		ofstream sdata;
+		sdata.open("student.txt", ios ::app);
+		sdata << endl;
+		sdata << s.id;
+		sdata << endl;
+		sdata << s.fname;
+		sdata << endl;
+		sdata << s.lname;
+		sdata << endl;
+		sdata << s.level;
+		sdata << endl;
+		sdata << s.course;
+		sdata << endl;
+		sdata << endl;
+		sdata.close();
+		goto loop;
+		break;
+	}
+	case 2:
+	{
+
+		ifstream tdata;
+		//open student txt file
+		tdata.open("student.txt");
+		tdata >> s.id;
+		tdata >> s.fname;
+		tdata >> s.lname;
+		tdata >> s.level;
+		tdata >> s.course;
+
+		
+		//output student txt file
+		while (!tdata.eof())
+		{
+			cout << endl;
+			cout << "\n\tStudent ID          : " << s.id;
+			cout << "\n\tStudent Full Name   : " << s.fname << " " << s.lname;
+			cout << "\n\tStudent Level(UG/G) : " << s.level;
+			cout << "\n\tStudent Course      : " << s.course;
+			cout << endl;
+
+			tdata >> s.id;
+			tdata >> s.fname;
+			tdata >> s.lname;
+			tdata >> s.level;
+			tdata >> s.course;
+		}
+		tdata.close();
+		goto loop;
+		break;
+	}
+	case 3:
+	{
+		cout << "\n\tEnter ID of student want to do delete record : ";
+		cin >> b;
+		ifstream d;
+		d.open("student.txt");
+		ofstream e;
+		e.open("new.txt");
+
+		d >> s.id;
+		d >> s.fname;
+		d >> s.lname;
+		d >> s.level;
+		d >> s.course;
+
+		while (!d.eof()) 
+		{
+			if (s.id != b)
+			{
+				e << endl;
+				e << s.id;
+				e << endl;
+				e << s.fname;
+				e << endl;
+				e << s.lname;
+				e << endl;
+				e << s.level;
+				e << endl;
+				e << s.course;
+				e << endl;
+			}
+			else
+			{
+				cout << "\n\tRecord deleted";
+			}
+			d >> s.id;
+			d >> s.fname;
+			d >> s.lname;
+			d >> s.level;
+			d >> s.course;
+		}
+		e.close();
+		d.close();
+
+		if (remove("student.txt") != 0)
+		{
+			cout << "\n\tFile does not remove";
+		}
+		else
+		{
+			cout << "\n\t ok";
+
+		}
+
+		if (rename("new.txt", "student.txt") != 0)
+		{
+			cout << "\n\tFile does not rename";
+		}
+		else
+		{
+			cout << "\n\tok";
+		}
+		goto loop;
+		break;
+	}
+	case 4: 
+	{
+		int g;
+		char h[25], j[25], k[30],l[30];
+		cout << "\n\tStudent id is : ";
+		cin >> b;
+		ifstream d;
+		d.open("student.txt");
+		ofstream e;
+		e.open("new.txt");
+
+		d >> s.id;
+		d >> s.fname;
+		d >> s.lname;
+		d >> s.level;
+		d >> s.course;
+		while (!d.eof())
+		{
+			if (s.id != b)
+			{
+				e << endl;
+				e << s.id;
+				e << endl;
+				e << s.fname;
+				e << endl;
+				e << s.lname;
+				e << endl;
+				e << s.level;
+				e << endl;
+				e << s.course;
+				e << endl;
+			}
+			else
+			{
+				cout << "\n\tEnter new id		 : ";
+				cin >> g;
+				cout << "\n\tEnter student first name   : ";
+				cin >> h;
+				cout << "\n\tEnter student last name    : ";
+				cin >> j;
+				cout << "\n\tEnter student level(UG/G)  : ";
+				cin >> k;
+
+				string klevel = k;
+
+				if (klevel == "UG") {
+					cout << endl;
+					cout << "\tUndergraduate Courses: " << endl;
+					cout << "\t----------------------";
+
+					//for UG
+					//open course txt
+					ifstream cdata;
+					cdata.open("undergradcourse.txt");
+					cdata >> c.cid;
+					cdata >> c.cname;
+					cdata >> c.clevel;
+					//course output
+					while (!cdata.eof())
+					{
+
+						cout << endl;
+						cout << "\n\tCourse ID   : " << c.cid;
+						cout << "\n\tCourse Name : " << c.cname;
+						cout << "\n\tCourse for  : " << c.clevel << " " << "Students";
+						cout << endl;
+
+						cdata >> c.cid;
+						cdata >> c.cname;
+						cdata >> c.clevel;
+
+					}
+					cdata.close();
+				}
+				else if (klevel == "G") {
+					cout << endl;
+					cout << "\tGraduate Courses:" << endl;
+					cout << "\t-----------------";
+
+					//open grad course txt file
+					ifstream gdata;
+					gdata.open("gradcourse.txt");
+					gdata >> gr.gid;
+					gdata >> gr.gname;
+					gdata >> gr.glevel;
+
+					//grad course output
+					while (!gdata.eof())
+					{
+
+						cout << endl;
+						cout << "\n\tCourse ID   : " << gr.gid;
+						cout << "\n\tCourse Name : " << gr.gname;
+						cout << "\n\tCourse for  : " << gr.glevel << " " << "Students";
+						cout << endl;
+
+						gdata >> gr.gid;
+						gdata >> gr.gname;
+						gdata >> gr.glevel;
+
+					}
+					gdata.close();
+				}
+
+				cout << "\n\tEnter student course       : ";
+				cin >> l;
+
+				e << endl;
+				e << g;
+				e << endl;
+				e << h;
+				e << endl;
+				e << j;
+				e << endl;
+				e << k;
+				e << endl;
+				e << l;
+				e << endl;
+			}
+			d >> s.id;
+			d >> s.fname;
+			d >> s.lname;
+			d >> s.level;
+			d >> s.course;
+		}
+		e.close();
+		d.close();
+
+		if (remove("student.txt") != 0)
+		{
+			cout << "\n\tFile does not remove";
+		}
+		else
+		{
+			cout << "\n\t ok";
+
+		}
+
+		if (rename("new.txt", "student.txt") != 0)
+		{
+			cout << "\n\tFile does not rename";
+		}
+		else
+		{
+			cout << "\n\tok";
+		}
+		goto loop;
+		break;
+	}
+	case 5:
+	{
+		cout << "you are now logged out" << endl;
+	}
+	
+	}
+
+
+	return 0;
+}
